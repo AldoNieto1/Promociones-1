@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PromocionProductoService {
+
     @Autowired
     private PromocionRepository promocionRepository;
 
@@ -68,5 +70,17 @@ public class PromocionProductoService {
 
     public void deleteRelacion(Long id) {
         productoPromocionRepository.deleteById(id);
+    }
+
+    public ProductoPromocion actualizarRelacion(Long id, ProductoPromocion productoPromocionDetails) {
+        Optional<ProductoPromocion> optional = productoPromocionRepository.findById(id);
+        if (optional.isPresent()) {
+            ProductoPromocion existente = optional.get();
+            // Actualiza los campos necesarios
+            existente.setProducto(productoPromocionDetails.getProducto());
+            existente.setPromocion(productoPromocionDetails.getPromocion());
+            return productoPromocionRepository.save(existente);
+        }
+        return null; // Puedes lanzar una excepción aquí si lo prefieres
     }
 }

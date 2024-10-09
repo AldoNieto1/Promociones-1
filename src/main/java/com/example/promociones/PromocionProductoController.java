@@ -9,11 +9,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class PromocionProductoController {
+
     @Autowired
     private PromocionProductoService promocionProductoService;
 
     // Endpoints para gestionar productos
-
     @GetMapping("/productos")
     public List<Producto> getAllProductos() {
         return promocionProductoService.findAllProductos();
@@ -37,7 +37,6 @@ public class PromocionProductoController {
     }
 
     // Endpoints para gestionar promociones
-
     @GetMapping("/promociones")
     public List<Promocion> getAllPromociones() {
         return promocionProductoService.findAllPromociones();
@@ -61,7 +60,6 @@ public class PromocionProductoController {
     }
 
     // Endpoints para gestionar relaciones entre productos y promociones
-
     @PostMapping("/producto-promocion")
     public ProductoPromocion createRelacion(@RequestBody ProductoPromocion productoPromocion) {
         return promocionProductoService.saveRelacion(productoPromocion);
@@ -77,9 +75,16 @@ public class PromocionProductoController {
         return promocionProductoService.findPromocionesByProductoId(productoId);
     }
 
+    @PutMapping("/producto-promocion/{id}")
+    public ResponseEntity<ProductoPromocion> updateRelacion(@PathVariable Long id, @RequestBody ProductoPromocion productoPromocionDetails) {
+        ProductoPromocion updatedRelacion = promocionProductoService.actualizarRelacion(id, productoPromocionDetails);
+        return ResponseEntity.ok(updatedRelacion);
+    }
+
     @DeleteMapping("/producto-promocion/{id}")
     public ResponseEntity<Void> deleteRelacion(@PathVariable Long id) {
         promocionProductoService.deleteRelacion(id);
         return ResponseEntity.noContent().build();
     }
 }
+
