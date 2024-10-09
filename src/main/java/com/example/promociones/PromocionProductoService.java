@@ -13,29 +13,10 @@ public class PromocionProductoService {
     @Autowired
     private ProductoRepository productoRepository;
 
-    // Métodos para Promociones
-    public List<Promocion> findAllPromociones() {
-        return promocionRepository.findAll();
-    }
+    @Autowired
+    private ProductoPromocionRepository productoPromocionRepository;
 
-    public Promocion savePromocion(Promocion promocion) {
-        return promocionRepository.save(promocion);
-    }
-
-    public Promocion updatePromocion(Long id, Promocion promocion) {
-        promocion.setId(id);
-        return promocionRepository.save(promocion);
-    }
-
-    public void deletePromocion(Long id) {
-        promocionRepository.deleteById(id);
-    }
-
-    public Promocion findPromocionById(Long id) {
-        return promocionRepository.findById(id).orElse(null);
-    }
-
-    // Métodos para Productos
+    // Métodos para gestionar productos
     public List<Producto> findAllProductos() {
         return productoRepository.findAll();
     }
@@ -53,7 +34,39 @@ public class PromocionProductoService {
         productoRepository.deleteById(id);
     }
 
-    public Producto findProductoById(Long id) {
-        return productoRepository.findById(id).orElse(null);
+    // Métodos para gestionar promociones
+    public List<Promocion> findAllPromociones() {
+        return promocionRepository.findAll();
+    }
+
+    public Promocion savePromocion(Promocion promocion) {
+        return promocionRepository.save(promocion);
+    }
+
+    public Promocion updatePromocion(Long id, Promocion promocion) {
+        promocion.setId(id);
+        return promocionRepository.save(promocion);
+    }
+
+    public void deletePromocion(Long id) {
+        promocionRepository.deleteById(id);
+    }
+
+    // Métodos para gestionar relaciones entre productos y promociones
+    public ProductoPromocion saveRelacion(ProductoPromocion productoPromocion) {
+        return productoPromocionRepository.save(productoPromocion);
+    }
+
+    public List<ProductoPromocion> findAllRelaciones() {
+        return productoPromocionRepository.findAll();
+    }
+
+    public List<Promocion> findPromocionesByProductoId(Long productoId) {
+        // Implementa lógica para obtener promociones basadas en el ID del producto
+        return null; // Implementar lógica aquí
+    }
+
+    public void deleteRelacion(Long id) {
+        productoPromocionRepository.deleteById(id);
     }
 }

@@ -12,7 +12,31 @@ public class PromocionProductoController {
     @Autowired
     private PromocionProductoService promocionProductoService;
 
-    // Métodos para Promociones
+    // Endpoints para gestionar productos
+
+    @GetMapping("/productos")
+    public List<Producto> getAllProductos() {
+        return promocionProductoService.findAllProductos();
+    }
+
+    @PostMapping("/productos")
+    public Producto createProducto(@RequestBody Producto producto) {
+        return promocionProductoService.saveProducto(producto);
+    }
+
+    @PutMapping("/productos/{id}")
+    public ResponseEntity<Producto> updateProducto(@PathVariable Long id, @RequestBody Producto productoDetails) {
+        Producto updatedProducto = promocionProductoService.updateProducto(id, productoDetails);
+        return ResponseEntity.ok(updatedProducto);
+    }
+
+    @DeleteMapping("/productos/{id}")
+    public ResponseEntity<Void> deleteProducto(@PathVariable Long id) {
+        promocionProductoService.deleteProducto(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // Endpoints para gestionar promociones
 
     @GetMapping("/promociones")
     public List<Promocion> getAllPromociones() {
@@ -36,27 +60,26 @@ public class PromocionProductoController {
         return ResponseEntity.noContent().build();
     }
 
-    // Métodos para Productos
+    // Endpoints para gestionar relaciones entre productos y promociones
 
-    @GetMapping("/productos")
-    public List<Producto> getAllProductos() {
-        return promocionProductoService.findAllProductos();
+    @PostMapping("/producto-promocion")
+    public ProductoPromocion createRelacion(@RequestBody ProductoPromocion productoPromocion) {
+        return promocionProductoService.saveRelacion(productoPromocion);
     }
 
-    @PostMapping("/productos")
-    public Producto createProducto(@RequestBody Producto producto) {
-        return promocionProductoService.saveProducto(producto);
+    @GetMapping("/producto-promocion")
+    public List<ProductoPromocion> getAllRelaciones() {
+        return promocionProductoService.findAllRelaciones();
     }
 
-    @PutMapping("/productos/{id}")
-    public ResponseEntity<Producto> updateProducto(@PathVariable Long id, @RequestBody Producto productoDetails) {
-        Producto updatedProducto = promocionProductoService.updateProducto(id, productoDetails);
-        return ResponseEntity.ok(updatedProducto);
+    @GetMapping("/productos/{productoId}/promociones")
+    public List<Promocion> getPromocionesPorProducto(@PathVariable Long productoId) {
+        return promocionProductoService.findPromocionesByProductoId(productoId);
     }
 
-    @DeleteMapping("/productos/{id}")
-    public ResponseEntity<Void> deleteProducto(@PathVariable Long id) {
-        promocionProductoService.deleteProducto(id);
+    @DeleteMapping("/producto-promocion/{id}")
+    public ResponseEntity<Void> deleteRelacion(@PathVariable Long id) {
+        promocionProductoService.deleteRelacion(id);
         return ResponseEntity.noContent().build();
     }
 }
